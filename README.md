@@ -1,79 +1,172 @@
 
-# Setup Docker Para Projetos Laravel (8, 9, 10 ou 11)
-[Assine a Academy, e Seja VIP!](https://academy.especializati.com.br)
+# Monster Burguer API Documentation (v1)
 
-### Passo a passo
-Clone Repositório
-```sh
-git clone https://github.com/especializati/setup-docker-laravel.git
+**Nota:** Esta API ainda está em fase de construção. Alguns recursos e endpoints podem ser adicionados ou alterados.
+
+## Base URL
+`https://api.monsterburguer.com/v1`
+
+## Autenticação
+### Login
+**Endpoint:** `POST /costumer/login`
+
+**Request Body:**
+```json
+{
+  "email": "user@example.com",
+  "password": "password123"
+}
 ```
 
-Clone os Arquivos do Laravel
-```sh
-git clone https://github.com/laravel/laravel.git app-laravel
+**Response:**
+```json
+{
+  "id": 1,
+  "name": "John Doe",
+  "email": "user@example.com",
+  "phone_number": "123456789",
+  "address": "123 Main St",
+  "meta": {
+    "Access_Token": "jwt_token",
+    "Token_Type": "Bearer"
+  }
+}
 ```
 
+## Endpoints
 
-Copie os arquivos docker-compose.yml, Dockerfile e o diretório docker/ para o seu projeto
-```sh
-cp -rf setup-docker-laravel/* app-laravel/
-```
-```sh
-cd app-laravel/
-```
+1. **Pão**
 
+   **Descrição:** Lista todos os pães disponíveis.
 
-Crie o Arquivo .env
-```sh
-cp .env.example .env
-```
+   **Endpoint:** `GET /bread`
 
+   **Response:**
+    ```json
+    [
+      {
+        "id": 1,
+        "name": "Integral"
+      },
+      {
+        "id": 2,
+        "name": "Francês"
+      }
+    ]
+    ```
 
-Atualize as variáveis de ambiente do arquivo .env
-```dosini
-APP_NAME="Especializa Ti"
-APP_URL=http://localhost:8989
+2. **Carne**
 
-DB_CONNECTION=mysql
-DB_HOST=db
-DB_PORT=3306
-DB_DATABASE=laravel
-DB_USERNAME=root
-DB_PASSWORD=root
+   **Descrição:** Lista todas as carnes disponíveis.
 
-CACHE_DRIVER=redis
-QUEUE_CONNECTION=redis
-SESSION_DRIVER=redis
+   **Endpoint:** `GET /meat`
 
-REDIS_HOST=redis
-REDIS_PASSWORD=null
-REDIS_PORT=6379
-```
+   **Response:**
+    ```json
+    [
+      {
+        "id": 1,
+        "name": "Bovina"
+      },
+      {
+        "id": 2,
+        "name": "Frango"
+      }
+    ]
+    ```
 
+3. **Opcional**
 
-Suba os containers do projeto
-```sh
-docker-compose up -d
-```
+   **Descrição:** Lista todos os opcionais disponíveis.
 
+   **Endpoint:** `GET /optional`
 
-Acessar o container
-```sh
-docker-compose exec app bash
-```
+   **Response:**
+    ```json
+    [
+      {
+        "id": 1,
+        "name": "Queijo Cheddar"
+      },
+      {
+        "id": 2,
+        "name": "Bacon"
+      }
+    ]
+    ```
 
+## Pedidos
 
-Instalar as dependências do projeto
-```sh
-composer install
-```
+1. **Lista de Pedidos**
 
+   **Descrição:** Lista todos os pedidos.
 
-Gerar a key do projeto Laravel
-```sh
-php artisan key:generate
-```
+   **Endpoint:** `GET /orders`
 
+   **Response:**
+    ```json
+    [
+      {
+        "order": {
+          "id": 1,
+          "bread": "Integral",
+          "meat": "Bovina",
+          "optional": "Queijo Cheddar",
+          "note": "Sem salada",
+          "status": "Pendente",
+          "created_at": "2024-08-26T12:34:56.000000Z",
+          "updated_at": "2024-08-26T12:34:56.000000Z",
+          "customer": {
+            "id": 1,
+            "name": "John Doe",
+            "phone_number": "123456789",
+            "address": "123 Main St",
+            "created_at": "2024-08-26T12:34:56.000000Z",
+            "updated_at": "2024-08-26T12:34:56.000000Z"
+          }
+        }
+      }
+    ]
+    ```
 
-Acessar o projeto
-[http://localhost:8989](http://localhost:8989)
+2. **Criar Pedido**
+
+   **Descrição:** Cria um novo pedido.
+
+   **Endpoint:** `POST /orders`
+
+   **Request Body:**
+    ```json
+    {
+      "note": "Com salada",
+      "customer_id": 1,
+      "bread_id": 1,
+      "meat_id": 2,
+      "optional_id": 1,
+      "status": "Pendente"
+    }
+    ```
+
+   **Response:**
+    ```json
+    {
+      "order": {
+        "id": 2,
+        "bread": "Integral",
+        "meat": "Frango",
+        "optional": "Queijo Cheddar",
+        "note": "Com salada",
+        "status": "Pendente",
+        "created_at": "2024-08-26T13:45:30.000000Z",
+        "updated_at": "2024-08-26T13:45:30.000000Z",
+        "customer": {
+          "id": 1,
+          "name": "John Doe",
+          "phone_number": "123456789",
+          "address": "123 Main St",
+          "created_at": "2024-08-26T12:34:56.000000Z",
+          "updated_at": "2024-08-26T12:34:56.000000Z"
+        }
+      }
+    }
+    ```
