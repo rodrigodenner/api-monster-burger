@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\OrderStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -33,5 +34,11 @@ class Order extends Model
   public function optional()
   {
     return $this->belongsTo(Optional::class);
+  }
+
+  // Método para obter o status em português usando a classe dedicada
+  public function getStatusInPortugueseAttribute()
+  {
+    return OrderStatus::getTranslatedStatus($this->status);
   }
 }

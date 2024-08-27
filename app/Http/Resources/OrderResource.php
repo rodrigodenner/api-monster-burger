@@ -21,7 +21,7 @@ class OrderResource extends JsonResource
         'meat' => $this->meat ? $this->meat->name : null,
         'optional' => $this->optional ? $this->optional->name : null,
         'note' => $this->note,
-        'status' => $this->status,
+        'status' => $this->status_in_portuguese,
         'created_at' => $this->created_at,
         'updated_at' => $this->updated_at,
         'customer' => [
